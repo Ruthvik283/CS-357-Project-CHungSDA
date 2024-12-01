@@ -7,15 +7,21 @@
 #include <queue>
 
 using namespace std;
+
+/** 
+ * type of vertex cover set, split into 2 parts (L, R),
+ * corresponding to the sets in the bipartite graph 
+ */
 using VC_t = pair<vector<int>, vector<int>>;
+/** a list of pairs (u, v) */
 using edges_t = vector<pair<int, int>>;
 
 const double INF = numeric_limits<double>::max();
 
 struct bipartite_matching {
     int n_left, n_right, flow = 0;
-    std::vector<std::vector<int>> g;
-    std::vector<int> match_from_left, match_from_right;
+    vector<vector<int>> g;
+    vector<int> match_from_left, match_from_right;
 
     bipartite_matching(int _n_left, int _n_right)
         : n_left(_n_left),
@@ -27,10 +33,10 @@ struct bipartite_matching {
 
     void add(int u, int v) { g[u].push_back(v); }
 
-    std::vector<int> dist;
+    vector<int> dist;
 
     void bfs() {
-        std::queue<int> q;
+        queue<int> q;
         for (int u = 0; u < n_left; ++u) {
             if (!~match_from_left[u])
                 q.push(u), dist[u] = 0;
@@ -75,8 +81,8 @@ struct bipartite_matching {
         return flow;
     }
 
-    std::pair<std::vector<int>, std::vector<int>> minimum_vertex_cover() {
-        std::vector<int> L, R;
+    pair<vector<int>, vector<int>> minimum_vertex_cover() {
+        vector<int> L, R;
         for (int u = 0; u < n_left; ++u) {
             if (!~dist[u])
                 L.push_back(u);
@@ -86,8 +92,8 @@ struct bipartite_matching {
         return {L, R};
     }
 
-    std::vector<std::pair<int, int>> get_edges() {
-        std::vector<std::pair<int, int>> ans;
+    vector<pair<int, int>> get_edges() {
+        vector<pair<int, int>> ans;
         for (int u = 0; u < n_left; ++u)
             if(match_from_left[u] != -1)
                 ans.emplace_back(u, match_from_left[u]);
@@ -172,7 +178,7 @@ void adjustMatrix(vector<vector<double>>& C, vector<bool>& rowCovered, vector<bo
 }
 
 // CHungSDA Algorithm
-vector<pair<int, int>> CHungSDA(vector<vector<double>>& C) {
+vector<pair<int, int>> CHungSDA(vector<vector<double>> C) {
     int n = C.size();
     vector<pair<int, int>> assignment;
 
@@ -185,7 +191,7 @@ vector<pair<int, int>> CHungSDA(vector<vector<double>>& C) {
 
         if (lines >= n) {
             // Optimal assignment found
-            assignment = std::move(edges);
+            assignment = move(edges);
             break;
         }
 
@@ -204,7 +210,6 @@ vector<pair<int, int>> CHungSDA(vector<vector<double>>& C) {
 }
 
 int main() {
-    freopen("input.txt", "r", stdin);
     // Input: Positions of drones, waypoints, and minimum distance
     int n;
     double deltaMin;
@@ -235,25 +240,26 @@ int main() {
         }
     }
 
-    bool isValid=1;
+    bool isValid = true;
+    vector<pair<int, int>> close_points;
 
-    vector<pair<int,int>>close_points;
-
-    for(int i=0;i<n;i++) {
-        for(int j=0;j<n;j++) {
-            if(i!=j&&euclideanDistance(waypoints[i], waypoints[j])<deltaMin){
-                close_points.push_back({i,j});
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i != j && euclideanDistance(waypoints[i], waypoints[j]) < deltaMin) {
+                isValid = false;
+                close_points.push_back({i, j});
             }
         }
     }
 
     if(!isValid) {
-
-        //Handling the case when constraint 2 fails
+        // Handling the case when constraint 2 fails
         cout<<"The following waypoints are too close: \n";
-        for(auto &p:close_points){
-            int i=p.first,j=p.second;
-            printf("{%d,%d,%d} {%d,%d,%d}\n",waypoints[i][0],waypoints[i][1],waypoints[i][2],waypoints[j][0],waypoints[j][1],waypoints[j][2]);
+        for (auto &p : close_points) {
+            int i = p.first, j = p.second;
+            cout << i << " " << j << " :: ";
+            cout << waypoints[i][0] << " " << waypoints[i][1] << " " << waypoints[i][2] << "; "
+                 << waypoints[j][0] << " " << waypoints[j][1] << " " << waypoints[j][2] << "\n";
         }
         return 0;
     }
@@ -261,16 +267,21 @@ int main() {
     // Solve using the CHungSDA algorithm
     edges_t assignment = CHungSDA(costMatrix);
 
+    long double total_cost = 0;
     // Output the assignment
     cout << "Optimal assignment:\n";
     for (auto& pair : assignment) {
         int i = pair.first;
-        int x = drones[i][0], y=drones[i][1], z=drones[i][2];
-        cout << "Drone " << pair.first<<": ("<<x<<", "<<y<<", "<<z<<") ";
-        i=pair.second;
-        x = waypoints[i][0], y=waypoints[i][1], z=waypoints[i][2];
-        cout << " -> Waypoint " << pair.second<<": ("<<x<<", "<<y<<", "<<z<<")\n";
+        int j = pair.second;
+        int x = drones[i][0], y = drones[i][1], z = drones[i][2];
+        cout << "Drone " << pair.first << ": (" << x << ", " << y << ", " << z << ") ";
+        x = waypoints[j][0], y = waypoints[j][1], z = waypoints[j][2];
+        cout << " -> Waypoint " << pair.second << ": (" << x << ", " << y << ", " << z << ")\n";
+
+        total_cost += costMatrix[i][j];
     }
+
+    cout << "\nTotal cost of optimal assignment: " << total_cost << "\n";
 
     return 0;
 }

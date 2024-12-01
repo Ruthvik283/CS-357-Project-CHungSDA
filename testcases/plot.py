@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 
 def plot_drone_translation(drones, waypoints, assignments):
     # Create a figure and an axis
@@ -49,40 +47,48 @@ def plot_drone_translation(drones, waypoints, assignments):
     ax.legend(loc='best', fontsize=12)
     plt.show()
 
+# Paste given input in the form of arrays here!
 def parse_input():
-
-
     # Drone positions
     drones = [
-        (3, 2, 1),  # Drone 0
-        (2, 3, 4),  # Drone 1
-        (1, 4, 7),  # Drone 2
-        (5, 1, 10), # Drone 3
-        (6, 7, 8),  # Drone 4
-        (8, 5, 6),  # Drone 5
-        (9, 2, 3)   # Drone 6
+        (9, 19, 41),   # Drone 0
+        (7, 5, 48),    # Drone 1
+        (22, 39, 4),   # Drone 2
+        (31, 46, 17),  # Drone 3
+        (18, 25, 45),  # Drone 4
+        (35, 9, 23),   # Drone 5
+        (48, 31, 8),   # Drone 6
+        (10, 6, 41),   # Drone 7
+        (40, 11, 25),  # Drone 8
+        (13, 12, 36)   # Drone 9
     ]
 
     # Waypoint positions
     waypoints = [
-        (6, 4, 6),  # Waypoint 0
-        (8, 5, 4),  # Waypoint 1
-        (7, 6, 5),  # Waypoint 2
-        (10, 9, 3), # Waypoint 3
-        (5, 3, 7),  # Waypoint 4
-        (4, 2, 8),  # Waypoint 5
-        (3, 1, 9)   # Waypoint 6
+        (6, 6, 32),    # Waypoint 0
+        (8, 40, 20),   # Waypoint 1
+        (2, 47, 11),   # Waypoint 2
+        (18, 13, 1),   # Waypoint 3
+        (50, 23, 25),  # Waypoint 4
+        (32, 48, 24),  # Waypoint 5
+        (13, 7, 38),   # Waypoint 6
+        (19, 42, 11),  # Waypoint 7
+        (44, 13, 42),  # Waypoint 8
+        (25, 6, 15)    # Waypoint 9
     ]
 
     # Assignments (Drone to Waypoint mapping)
     assignments = [
-        (0, 3),  # Drone 0 -> Waypoint 3
-        (1, 4),  # Drone 1 -> Waypoint 4
-        (2, 5),  # Drone 2 -> Waypoint 5
-        (3, 6),  # Drone 3 -> Waypoint 6
-        (4, 0),  # Drone 4 -> Waypoint 0
-        (5, 2),  # Drone 5 -> Waypoint 2
-        (6, 1)   # Drone 6 -> Waypoint 1
+        (0, 2),  # Drone 0 -> Waypoint 2
+        (1, 0),  # Drone 1 -> Waypoint 0
+        (2, 7),  # Drone 2 -> Waypoint 7
+        (3, 5),  # Drone 3 -> Waypoint 5
+        (4, 1),  # Drone 4 -> Waypoint 1
+        (5, 9),  # Drone 5 -> Waypoint 9
+        (6, 4),  # Drone 6 -> Waypoint 4
+        (7, 6),  # Drone 7 -> Waypoint 6
+        (8, 8),  # Drone 8 -> Waypoint 8
+        (9, 3)   # Drone 9 -> Waypoint 3
     ]
 
     return drones, waypoints, assignments

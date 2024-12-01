@@ -1,0 +1,9 @@
+Enter the number of drones/waypoints: Enter the minimum distance (delta_min): Enter drone positions (x y z):
+Enter waypoint positions (x y z):
+Optimal assignment:
+Drone 0: (0, 0, 0)  -> Waypoint 0: (0, 0, 5)
+Drone 1: (1, 1, 1)  -> Waypoint 1: (1, 1, 6)
+Drone 2: (2, 2, 2)  -> Waypoint 2: (2, 2, 7)
+Drone 3: (3, 3, 3)  -> Waypoint 3: (3, 3, 8)
+
+Total cost of optimal assignment: 20
