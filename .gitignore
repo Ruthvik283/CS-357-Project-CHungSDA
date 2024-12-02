@@ -1,4 +1,4 @@
-*.out
+a.out
 .venv
 code
 .obsidian
